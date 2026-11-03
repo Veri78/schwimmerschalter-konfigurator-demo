@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Schwimmerschalter-Konfigurator – Vorschau</title>
+	<!-- Schriften wie auf der HLM-Website -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&family=Roboto:wght@300;400;500;700&display=swap">
+	<!-- Echtes Plugin-Stylesheet -->
+	<link rel="stylesheet" href="assets/css/konfigurator.css">
+	<style>
+		body { font-family: 'Roboto', Helvetica, Arial, sans-serif; margin: 0; background: #f0f0f1; color: #3a3a39; }
+		.demo-wrap { max-width: 1100px; margin: 0 auto; padding: 24px 20px 60px; }
+		.demo-banner { background: #fff8e5; border: 1px solid #f0c33c; border-radius: 8px; padding: 14px 18px; margin-bottom: 24px; font-size: 14px; line-height: 1.5; }
+		.demo-banner strong { color: #8a6d00; }
+		.demo-title { margin: 0 0 4px; font-family: 'Roboto Condensed', Helvetica, Arial, sans-serif; font-weight: 700; font-size: 30px; color: #016085; }
+		.demo-sub { color: #6f6e6c; margin: 0 0 24px; }
+	</style>
+</head>
+<body>
+	<div class="demo-wrap">
+		<h1 class="demo-title">Schwimmerschalter-Konfigurator</h1>
+		<p class="demo-sub">Demo-Vorschau</p>
+
+		<div class="demo-banner">
+			<strong>Hinweis – Demo-Vorschau:</strong> Diese Seite dient zum Ausprobieren der
+			Bedienung (Felder, Schaltpunkte, bedingte Felder, Live-Zusammenfassung, beide Buttons).
+			Das heruntergeladene PDF ist hier nur ein <em>Platzhalter</em> und es wird <em>keine</em> E-Mail versendet –
+			das passiert erst in der echten WordPress-Umgebung.
+		</div>
+
+		<!-- Container des echten Konfigurators -->
+		<div class="ssk-konfigurator" id="ssk-konfigurator-1" data-ssk>
+			<div class="ssk-loading">Konfigurator wird geladen …</div>
+		</div>
+	</div>
+
+	<!-- 0) Lottie-Daten für die lokale Vorschau (damit Animationen auch per Doppelklick laufen) -->
+	<script src="assets/animations/preview-data.js"></script>
+
+	<!-- 1) Daten, die im Live-Betrieb WordPress per wp_localize_script liefert -->
+	<script>
+	window.SSK_DATA = {
+		restPdf: "https://demo.local/ssk-demo/pdf",
+		restAnfrage: "https://demo.local/ssk-demo/anfrage",
+		nonce: "demo",
+		lang: "de",
+		logoUrl: "assets/img/hlm-elektronik-logo.svg",
+		minQuantity: 5,
+		privacyUrl: "",
+		upload: { enabled: true, maxSize: 5242880, accept: ".pdf,.png,.jpg,.jpeg,.gif,.dwg,.dxf,.step,.stp" },
+		strings: {
+			summaryHeading: "Ihre Konfiguration",
+			addSwitchPoint: "Schaltpunkt hinzufügen",
+			removeSwitchPoint: "Entfernen",
+			switchPoint: "Schaltpunkt",
+			contactHeading: "Ihre Kontaktdaten",
+			btnDownload: "Konfiguration als PDF herunterladen",
+			btnRequest: "Anfrage absenden",
+			btnRequestOpen: "Als Anfrage absenden",
+			btnBack: "Zurück",
+			required: "Pflichtfeld",
+			pleaseSelect: "Bitte wählen …",
+			fieldRequired: "Bitte dieses Feld ausfüllen.",
+			emailInvalid: "Bitte eine gültige E-Mail-Adresse angeben.",
+			privacyRequired: "Bitte stimmen Sie der Datenschutzerklärung zu.",
+			fixErrors: "Bitte korrigieren Sie die markierten Felder.",
+			sending: "Wird gesendet …",
+			generating: "PDF wird erstellt …",
+			requestSuccess: "Vielen Dank! Ihre Anfrage wurde gesendet (Demo). Eine Kopie als PDF finden Sie hier:",
+			downloadReady: "Ihr PDF wurde erstellt (Demo-Platzhalter).",
+			downloadPdf: "PDF herunterladen",
+			genericError: "Es ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut.",
+			fileTooLarge: "Die Datei ist zu groß.",
+			fileTypeInvalid: "Dieser Dateityp ist nicht erlaubt.",
+			optional: "optional",
+			minQuantityNote: "Mindestmenge: %d Stück",
+			otherLabel: "Andere (bitte angeben)",
+			btnReset: "Zurücksetzen",
+			resetConfirm: "Möchten Sie wirklich alle Eingaben löschen und neu beginnen?"
+		},
+		contact: [
+			{ id: "name", type: "text", required: true, label: "Name" },
+			{ id: "firma", type: "text", required: false, label: "Firma" },
+			{ id: "email", type: "email", required: true, label: "E-Mail" },
+			{ id: "telefon", type: "tel", required: false, label: "Telefon" },
+			{ id: "bemerkung", type: "textarea", required: false, label: "Bemerkung" }
+		],
+		schema: [
+			{
+				id: "bauart", type: "group", label: "Bauart & Behälter",
+				fields: [
+					{ id: "ausrichtung", type: "select", label: "Ausrichtung", required: true,
+						animations: [
+							{ value: "vertikal", data: (window.SSK_PREVIEW_ANIM || {}).vertikal, src: "assets/animations/ausrichtung-vertikal.json" },
+							{ value: "horizontal", data: (window.SSK_PREVIEW_ANIM || {}).horizontal, src: "assets/animations/ausrichtung-horizontal.json" }
+						],
+						options: [
+						{ value: "vertikal", label: "Vertikal" }, { value: "horizontal", label: "Horizontal" } ] },
+					{ id: "behaeltertiefe", type: "number", label: "Behältertiefe", required: false, min: 0, unit: "mm" },
+					{ id: "material", type: "select", label: "Material", required: true, allowOther: true, options: [
+						{ value: "kunststoff", label: "Kunststoff" }, { value: "edelstahl", label: "Edelstahl" }, { value: "messing", label: "Messing" } ] },
+					{ id: "rezyklat", type: "checkbox", label: "Rezyklat möglich", required: false }
+				]
+			},
+			{
+				id: "schaltpunkte", type: "repeater", label: "Schaltpunkte", itemLabel: "Schaltpunkt", min: 1, max: 3,
+				fields: [
+					{ id: "funktion", type: "select", label: "Schaltfunktion", required: true, options: [
+						{ value: "schliesser", label: "Schließer (NO)" }, { value: "oeffner", label: "Öffner (NC)" }, { value: "wechsler", label: "Wechsler (CO)" } ] },
+					{ id: "position", type: "number", label: "Schaltposition von oben", required: true, min: 0, unit: "mm" }
+				]
+			},
+			{
+				id: "montage", type: "group", label: "Montage",
+				fields: [
+					{ id: "typ", type: "select", label: "Montageart", required: true, options: [
+						{ value: "metrisch", label: "Metrisch" }, { value: "zoll", label: "Zoll" }, { value: "kanisterdeckel", label: "Kanisterdeckel" } ] },
+					{ id: "beschreibung", type: "text", label: "Beschreibung (optional)", required: false }
+				]
+			},
+			{
+				id: "elektrik", type: "group", label: "Elektrische Eigenschaften",
+				fields: [
+					{ id: "spannung", type: "select", label: "Spannung", required: true, options: [
+						{ value: "lt42_dc", label: "< 42 V/DC" }, { value: "100_dc", label: "100 V/DC" }, { value: "200_dc", label: "200 V/DC" }, { value: "230_ac", label: "230 V/AC" } ] },
+					{ id: "anschlussart", type: "select", label: "Anschlussart", required: true, options: [
+						{ value: "kabel", label: "Kabel" }, { value: "litze", label: "Litze" } ] },
+					{ id: "kabellaenge", type: "number", label: "Kabel-/Litzenlänge", required: false, min: 0, unit: "mm" },
+					{ id: "kabelmaterial", type: "select", label: "Kabelmaterial", required: false, allowOther: true, options: [
+						{ value: "pvc", label: "PVC" }, { value: "pur", label: "PUR" }, { value: "teflon", label: "Teflon (PTFE)" }, { value: "silikon", label: "Silikon" } ] },
+					{ id: "litzenende", type: "select", label: "Litzenende", required: false, showIf: { field: "anschlussart", value: "litze" }, options: [
+						{ value: "angezogen", label: "Angezogen" }, { value: "abisoliert_verzinnt", label: "Abisoliert / verzinnt" }, { value: "stecker", label: "Mit Stecker" }, { value: "crimp", label: "Crimp-Kontakt" } ] }
+				]
+			},
+			{
+				id: "sonstiges", type: "group", label: "Weitere Angaben",
+				fields: [
+					{ id: "temperaturbereich", type: "select", label: "Temperaturbereich", required: true, allowOther: true, options: [
+						{ value: "t1", label: "-30 … +80 °C" }, { value: "t2", label: "-20 … +100 °C" }, { value: "t3", label: "0 … +120 °C" }, { value: "t4", label: "-10 … +150 °C" } ] },
+					{ id: "stueckzahl", type: "number", label: "Stückzahl", required: true, min: 5, unit: "Stück" }
+				]
+			}
+		]
+	};
+
+	// 2) Demo-Shim: fängt die REST-Aufrufe ab und liefert ein gültiges Platzhalter-PDF zurück.
+	(function () {
+		var originalFetch = window.fetch ? window.fetch.bind(window) : null;
+
+		function escPdf(s) { return String(s).replace(/\\/g, "\\\\").replace(/\(/g, "\\(").replace(/\)/g, "\\)"); }
+
+		function buildDemoPdf(lines) {
+			var content = "BT /F1 16 Tf 50 790 Td 20 TL\n";
+			content += "(" + escPdf(lines[0] || "") + ") Tj\n";
+			content += "/F1 11 Tf\n";
+			for (var i = 1; i < lines.length; i++) { content += "T* (" + escPdf(lines[i]) + ") Tj\n"; }
+			content += "ET";
+
+			var obj = [];
+			obj[1] = "<< /Type /Catalog /Pages 2 0 R >>";
+			obj[2] = "<< /Type /Pages /Kids [3 0 R] /Count 1 >>";
+			obj[3] = "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >>";
+			obj[4] = "<< /Length " + content.length + " >>\nstream\n" + content + "\nendstream";
+			obj[5] = "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>";
+
+			var pdf = "%PDF-1.4\n";
+			var offsets = [];
+			for (var n = 1; n <= 5; n++) { offsets[n] = pdf.length; pdf += n + " 0 obj\n" + obj[n] + "\nendobj\n"; }
+			var xrefPos = pdf.length;
+			pdf += "xref\n0 6\n0000000000 65535 f \n";
+			for (var m = 1; m <= 5; m++) { pdf += ("0000000000" + offsets[m]).slice(-10) + " 00000 n \n"; }
+			pdf += "trailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n" + xrefPos + "\n%%EOF";
+			return pdf;
+		}
+
+		window.fetch = function (url, opts) {
+			if (typeof url === "string" && url.indexOf("/ssk-demo/") >= 0) {
+				var ref = "DEMO-" + new Date().getFullYear() + "-XXXX";
+				var lines = [
+					"Schwimmerschalter - Demo-Konfiguration",
+					"Referenz: " + ref,
+					"",
+					"Dies ist nur ein Platzhalter-PDF der lokalen Vorschau.",
+					"Das echte, vollstaendige PDF (mit Logo, allen Werten und",
+					"Kontaktdaten) wird im Live-Betrieb in WordPress erzeugt.",
+					"",
+					"Die aktuelle Konfiguration siehst du rechts in der",
+					"Live-Zusammenfassung auf der Seite."
+				];
+				var b64 = btoa(buildDemoPdf(lines));
+				return Promise.resolve({
+					status: 200,
+					json: function () { return Promise.resolve({ ok: true, reference: ref, filename: "Demo-Konfiguration.pdf", pdf: b64 }); }
+				});
+			}
+			return originalFetch ? originalFetch(url, opts) : Promise.reject(new Error("fetch n/a"));
+		};
+	})();
+	</script>
+
+	<!-- 3) Lottie-Player + echtes Plugin-JavaScript -->
+	<script src="assets/js/lottie.min.js"></script>
+	<script src="assets/js/konfigurator.js"></script>
+</body>
+</html>

@@ -1,0 +1,440 @@
+/* Schwimmerschalter-Konfigurator – Frontend-Styles (scoped: .ssk-konfigurator) */
+
+.ssk-konfigurator {
+	--ssk-accent: #016085;        /* HLM-Blau */
+	--ssk-accent-dark: #014a66;   /* dunkleres Blau (Titel/Hover) */
+	--ssk-cta: #fe3233;           /* HLM-Rot (Haupt-Aktion) */
+	--ssk-cta-dark: #d92829;
+	--ssk-border: #e2e2e3;
+	--ssk-bg: #ffffff;
+	--ssk-bg-soft: #f5f6f7;
+	--ssk-text: #3a3a39;          /* warmes Dunkelgrau */
+	--ssk-muted: #6f6e6c;
+	--ssk-error: #d92829;
+	--ssk-radius: 8px;
+	--ssk-font-body: 'Roboto', Helvetica, Arial, 'Lucida Grande', sans-serif;
+	--ssk-font-head: 'Roboto Condensed', 'Roboto', Helvetica, Arial, sans-serif;
+
+	color: var(--ssk-text);
+	font-family: var(--ssk-font-body);
+	font-size: 16px;
+	line-height: 1.55;
+	box-sizing: border-box;
+}
+
+.ssk-konfigurator *,
+.ssk-konfigurator *::before,
+.ssk-konfigurator *::after {
+	box-sizing: inherit;
+}
+
+.ssk-loading,
+.ssk-noscript {
+	padding: 24px;
+	background: var(--ssk-bg-soft);
+	border: 1px solid var(--ssk-border);
+	border-radius: var(--ssk-radius);
+	color: var(--ssk-muted);
+	text-align: center;
+}
+
+/* Kopfbereich mit Logo (rechts oben) */
+.ssk-header {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	margin-bottom: 20px;
+}
+
+.ssk-logo {
+	max-height: 64px;
+	width: auto;
+	height: auto;
+	display: block;
+}
+
+@media (max-width: 560px) {
+	.ssk-logo { max-height: 46px; }
+}
+
+/* Layout: Formular + Zusammenfassung */
+.ssk-layout {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 24px;
+}
+
+@media (min-width: 900px) {
+	.ssk-layout {
+		grid-template-columns: minmax(0, 1.6fr) minmax(260px, 1fr);
+		align-items: start;
+	}
+	.ssk-summary {
+		position: sticky;
+		top: 24px;
+	}
+}
+
+/* Abschnitte */
+.ssk-section {
+	background: var(--ssk-bg);
+	border: 1px solid var(--ssk-border);
+	border-radius: var(--ssk-radius);
+	padding: 18px 20px;
+	margin-bottom: 18px;
+}
+
+.ssk-section__title {
+	margin: 0 0 14px;
+	font-family: var(--ssk-font-head);
+	font-size: 1.25em;
+	font-weight: 700;
+	letter-spacing: 0.01em;
+	color: var(--ssk-accent-dark);
+	border-bottom: 2px solid var(--ssk-accent);
+	padding-bottom: 8px;
+}
+
+/* Felder */
+.ssk-field {
+	margin-bottom: 14px;
+}
+
+.ssk-field:last-child {
+	margin-bottom: 0;
+}
+
+.ssk-field__label {
+	display: block;
+	font-weight: 600;
+	margin-bottom: 5px;
+}
+
+.ssk-req {
+	color: var(--ssk-error);
+	margin-left: 2px;
+}
+
+.ssk-optional {
+	color: var(--ssk-muted);
+	font-weight: 400;
+	font-size: 0.85em;
+	margin-left: 4px;
+}
+
+.ssk-field input[type="text"],
+.ssk-field input[type="email"],
+.ssk-field input[type="tel"],
+.ssk-field input[type="url"],
+.ssk-field input[type="number"],
+.ssk-field select,
+.ssk-field textarea {
+	width: 100%;
+	padding: 9px 11px;
+	border: 1px solid var(--ssk-border);
+	border-radius: 6px;
+	font-size: 1em;
+	font-family: inherit;
+	color: var(--ssk-text);
+	background: #fff;
+}
+
+.ssk-field textarea {
+	min-height: 90px;
+	resize: vertical;
+}
+
+.ssk-field input:focus,
+.ssk-field select:focus,
+.ssk-field textarea:focus {
+	outline: none;
+	border-color: var(--ssk-accent);
+	box-shadow: 0 0 0 2px rgba(34, 113, 177, 0.18);
+}
+
+.ssk-field--checkbox label {
+	display: flex;
+	align-items: flex-start;
+	gap: 8px;
+	font-weight: 400;
+	cursor: pointer;
+}
+
+.ssk-field--checkbox input {
+	margin-top: 3px;
+}
+
+.ssk-input-unit {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.ssk-input-unit .ssk-unit {
+	color: var(--ssk-muted);
+	white-space: nowrap;
+}
+
+.ssk-other {
+	margin-top: 8px;
+}
+
+/* Animationen (z. B. Ausrichtung) */
+.ssk-anim-row {
+	display: flex;
+	gap: 14px;
+	margin-bottom: 16px;
+	flex-wrap: wrap;
+}
+
+.ssk-anim-box {
+	flex: 1 1 0;
+	min-width: 150px;
+	border: 2px solid var(--ssk-border);
+	border-radius: var(--ssk-radius);
+	padding: 10px;
+	background: var(--ssk-bg-soft);
+	text-align: center;
+	cursor: pointer;
+	transition: border-color 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+}
+
+.ssk-anim-box:hover { border-color: var(--ssk-accent); }
+
+.ssk-anim {
+	width: 100%;
+	height: 150px;
+}
+
+.ssk-anim svg { display: block; margin: 0 auto; max-width: 100%; max-height: 100%; }
+
+.ssk-anim-caption {
+	margin-top: 8px;
+	font-weight: 600;
+	color: var(--ssk-muted);
+}
+
+.ssk-anim-box--active {
+	border-color: var(--ssk-accent);
+	box-shadow: 0 0 0 2px rgba(1, 96, 133, 0.15);
+}
+
+.ssk-anim-box--active .ssk-anim-caption { color: var(--ssk-accent-dark); }
+
+.ssk-anim-box--dim { opacity: 0.5; }
+
+/* Feldfehler */
+.ssk-field.ssk-has-error input,
+.ssk-field.ssk-has-error select,
+.ssk-field.ssk-has-error textarea {
+	border-color: var(--ssk-error);
+	box-shadow: 0 0 0 2px rgba(214, 54, 56, 0.15);
+}
+
+.ssk-field__error {
+	color: var(--ssk-error);
+	font-size: 0.85em;
+	margin-top: 5px;
+	display: none;
+}
+
+.ssk-field.ssk-has-error .ssk-field__error {
+	display: block;
+}
+
+/* Repeater (Schaltpunkte) */
+.ssk-repeater-item {
+	border: 1px dashed var(--ssk-border);
+	border-radius: 6px;
+	padding: 14px;
+	margin-bottom: 12px;
+	background: var(--ssk-bg-soft);
+}
+
+.ssk-repeater-item__head {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 10px;
+	font-weight: 600;
+}
+
+.ssk-repeater-grid {
+	display: grid;
+	gap: 12px;
+}
+
+@media (min-width: 560px) {
+	.ssk-repeater-grid {
+		grid-template-columns: 1fr 1fr;
+	}
+}
+
+/* Buttons */
+.ssk-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	padding: 12px 20px;
+	border-radius: 6px;
+	border: 1px solid transparent;
+	font-size: 1em;
+	font-family: inherit;
+	font-weight: 600;
+	cursor: pointer;
+	text-decoration: none;
+	transition: filter 0.15s ease, background 0.15s ease;
+}
+
+.ssk-btn:disabled {
+	opacity: 0.6;
+	cursor: default;
+}
+
+.ssk-btn--primary {
+	background: var(--ssk-cta);
+	color: #fff;
+}
+
+.ssk-btn--primary:hover:not(:disabled) {
+	background: var(--ssk-cta-dark);
+}
+
+.ssk-btn--secondary {
+	background: #fff;
+	color: var(--ssk-accent-dark);
+	border-color: var(--ssk-accent);
+}
+
+.ssk-btn--secondary:hover:not(:disabled) {
+	background: var(--ssk-bg-soft);
+}
+
+.ssk-btn--ghost {
+	background: transparent;
+	color: var(--ssk-muted);
+	border-color: var(--ssk-border);
+	padding: 8px 14px;
+	font-weight: 500;
+}
+
+.ssk-btn--small {
+	padding: 6px 12px;
+	font-size: 0.85em;
+}
+
+/* Zusammenfassung */
+.ssk-summary {
+	background: var(--ssk-bg-soft);
+	border: 1px solid var(--ssk-border);
+	border-radius: var(--ssk-radius);
+	padding: 18px 20px;
+}
+
+.ssk-summary__title {
+	margin: 0 0 12px;
+	font-family: var(--ssk-font-head);
+	font-size: 1.2em;
+	font-weight: 700;
+	color: var(--ssk-accent-dark);
+}
+
+.ssk-summary__group {
+	margin-bottom: 12px;
+}
+
+.ssk-summary__group h4 {
+	margin: 0 0 4px;
+	font-size: 0.9em;
+	text-transform: uppercase;
+	letter-spacing: 0.03em;
+	color: var(--ssk-muted);
+}
+
+.ssk-summary__row {
+	display: flex;
+	justify-content: space-between;
+	gap: 12px;
+	padding: 3px 0;
+	font-size: 0.92em;
+	border-bottom: 1px solid var(--ssk-border);
+}
+
+.ssk-summary__row span:last-child {
+	font-weight: 600;
+	text-align: right;
+}
+
+.ssk-actions {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	margin-top: 16px;
+}
+
+.ssk-btn--reset {
+	align-self: center;
+	margin-top: 4px;
+	color: var(--ssk-muted);
+}
+
+.ssk-btn--reset:hover:not(:disabled) {
+	color: var(--ssk-cta);
+	border-color: var(--ssk-cta);
+}
+
+/* Kontaktblock */
+.ssk-contact {
+	margin-top: 4px;
+}
+
+.ssk-contact[hidden] {
+	display: none;
+}
+
+/* Meldungen */
+.ssk-message {
+	padding: 14px 16px;
+	border-radius: 6px;
+	margin-bottom: 16px;
+}
+
+.ssk-message--error {
+	background: #fcf0f1;
+	border: 1px solid var(--ssk-error);
+	color: #8a1f21;
+}
+
+.ssk-message--success {
+	background: #edf7ed;
+	border: 1px solid #4ab866;
+	color: #1e6b2f;
+}
+
+.ssk-message a {
+	color: inherit;
+	font-weight: 700;
+}
+
+.ssk-spinner {
+	width: 16px;
+	height: 16px;
+	border: 2px solid rgba(255, 255, 255, 0.5);
+	border-top-color: #fff;
+	border-radius: 50%;
+	animation: ssk-spin 0.7s linear infinite;
+}
+
+@keyframes ssk-spin {
+	to { transform: rotate(360deg); }
+}
+
+/* Honeypot – für Menschen unsichtbar */
+.ssk-hp {
+	position: absolute !important;
+	left: -9999px !important;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+}
